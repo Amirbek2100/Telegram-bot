@@ -1,0 +1,24 @@
+# Linux VPS (systemd). Yo'l va foydalanuvchini o'zingizga moslang.
+#
+# sudo cp ecotime-bot.service /etc/systemd/system/
+# sudo nano /etc/systemd/system/ecotime-bot.service  # User, paths, EnvironmentFile
+# sudo systemctl daemon-reload
+# sudo systemctl enable --now ecotime-bot
+# sudo journalctl -u ecotime-bot -f
+
+[Unit]
+Description=ECOTIME Telegram Bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/ecotime-bot
+EnvironmentFile=/opt/ecotime-bot/bot.env
+ExecStart=/opt/ecotime-bot/venv/bin/python /opt/ecotime-bot/bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
